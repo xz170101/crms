@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyz.dao.StudentMapper">
+	<!-- 映射 -->
+  		<!-- <resultMap type="student" id="stu">
+			<id column="stu_id" property="stu_id"/>
+			<result column="stu_Name" property="stu_Name"/>
+			<result column="stu_Age" property="stu_Age"/>
+			<result column="stu_Sex" property="stu_Sex"/>
+			<result column="stu_Phone" property="stu_Phone"/>
+			<result column="stu_Status" property="stu_Status"/>
+			<result column="stu_PerState" property="stu_PerState"/>
+			<result column="stu_MsgSource" property="stu_MsgSource"/>
+			<result column="stu_SourceUrl" property="stu_SourceUrl"/>
+			<result column="stu_SourceKeyWord" property="stu_SourceKeyWord"/>
+			<result column="stu_Address" property="stu_Address"/>
+			<result column="stu_NetPusherld" property="stu_NetPusherld"/>
+			<result column="stu_qq" property="stu_qq"/>
+			<result column="stu_WeiXin" property="stu_WeiXin"/>
+			<result column="stu_Content" property="stu_Content"/>
+			<result column="stu_CreateTime" property="stu_CreateTime"/>
+			<result column="stu_LearnForward" property="stu_LearnForward"/>
+			<result column="stu_isValid" property="stu_isValid"/>
+			<result column="stu_Record" property="stu_Record"/>
+			<result column="stu_isReturnVist" property="stu_isReturnVist"/>
+			<result column="stu_isHome" property="stu_isHome"/>
+			<result column="stu_firstVisitTime" property="stu_firstVisitTime"/>
+			<result column="stu_HomeTime" property="stu_HomeTime"/>
+			<result column="stu_LostValid" property="stu_LostValid"/>
+			<result column="stu_isPay" property="stu_isPay"/>
+			<result column="stu_PayTime" property="stu_PayTime"/>
+			<result column="stu_Money" property="stu_Money"/>
+			<result column="stu_isReturnMoney" property="stu_isReturnMoney"/>
+			<result column="stu_isInClass" property="stu_isInClass"/>
+			<result column="stu_inClassTime" property="stu_inClassTime"/>
+			<result column="stu_inClassContent" property="stu_inClassContent"/>
+			<result column="stu_AskerContent" property="stu_AskerContent"/>
+			<result column="stu_isDel" property="stu_isDel"/>
+			<result column="stu_FromPart" property="stu_FromPart"/>
+			<result column="stu_stuConcern" property="stu_stuConcern"/>
+			<result column="stu_isBaoBei" property="stu_isBaoBei"/>
+			<result column="stu_ZiXunName" property="stu_ZiXunName"/>
+			<result column="stu_CreateUser" property="stu_CreateUser"/>
+			<result column="stu_preMoney" property="stu_preMoney"/>
+			<result column="stu_preMoneyTime" property="stu_preMoneyTime"/>
+			<result column="sexitInte" property="sexitInte"/>
+			<result column="sexitString" property="sexitString"/>
+
+			<result column="follows_Id" property="netfollows.follows_Id"/>
+			<result column="stu_Id" property="netfollows.stu_Id"/>
+			<result column="studentName" property="netfollows.studentName"/>
+			<result column="followTime" property="netfollows.followTime"/>
+			<result column="nextFollowTime" property="netfollows.nextFollowTime"/>
+			<result column="conTent" property="netfollows.conTent"/>
+			<result column="user_Id" property="netfollows.user_Id"/>
+			<result column="followType" property="netfollows.followType"/>
+			<result column="createTime" property="netfollows.createTime"/>
+			<result column="followState" property="netfollows.followState"/>
+			<result column="nexit1int" property="netfollows.nexit1int"/>
+			<result column="nexit2String" property="netfollows.nexit2String"/>
+	
+			
+						
+			<result column="user_Id" property="netfollows.user.user_Id"/>
+			<result column="loginName" property="netfollows.user.loginName"/>
+			<result column="passWord" property="netfollows.user.passWord"/>
+			<result column="psdWrongTime" property="netfollows.user.psdWrongTime"/>
+			<result column="lockTime" property="netfollows.user.lockTime"/>
+			<result column="protectEMail" property="netfollows.user.protectEMail"/>
+			<result column="protectMTel" property="netfollows.user.protectMTel"/>
+			<result column="loginTime" property="netfollows.user.loginTime"/>
+			<result column="createTime" property="netfollows.user.createTime"/>
+			<result column="isLockout" property="netfollows.user.isLockout"/>
+			<result column="uexit2String" property="netfollows.user.uexit2String"/>
+			<result column="uexit1int" property="netfollows.user.uexit1int"/>
+			
+		</resultMap>  -->
+		<resultMap type="student" id="stu">
+			<id column="stu_id" property="stu_id"/>
+			<result column="stu_Name" property="stu_Name"/>
+			<!-- <collection property="netfollows" ofType="netFollows"> -->
+				<result column="follows_Id" property="netFollows.follows_Id"/>
+				<result column="followTime" property="netFollows.followTime"/>
+				<result column="nextFollowTime" property="netFollows.nextFollowTime"/>
+				<result column="conTent" property="netFollows.conTent"/>
+				<result column="followType" property="netFollowsfollowType"/>
+				<result column="createTime" property="netFollows.createTime"/>
+				<result column="followState" property="netFollows.followState"/>
+				<result column="nexit1int" property="netFollows.nexit1int"/>
+				<result column="nexit2String" property="netFollows.nexit2String"/>	
+				<result column="stu_Id" property="netFollows.stu_Id"/>		
+			<!-- </collection> -->
+		</resultMap>
+		<!-- 查询日志 -->
+		<select id="selectLog" parameterType="fenye" resultMap="stu">
+			select s.stu_id,s.stu_Name, n.followTime,n.conTent,n.nextFollowTime
+			from students s INNER JOIN netfollows n			 
+			 <where>
+			     s.stu_id=n.stu_Id			 	
+			 	 and s.stu_id=#{student.stu_id}	
+			 	 order by n.followTime desc		 	
+			 </where>
+		       limit #{page},#{pageSize}			 
+		</select>
+		
+		<!-- 分页多条件查询 -->
+	<select id="selectStudent" parameterType="fenye" resultType="student">
+		select * FROM students 
+		<where>			
+			<if test="text1 !=null and text1!=''">
+				and stu_Name like "%"#{text1}"%"
+			</if>
+			<if test="text2 !=null and text2!=''">
+				and stu_Phone like "%"#{text2}"%"
+			</if>
+			<if test="text3 !=null and text3!=''">
+				and stu_ZiXunName like "%"#{text3}"%"
+			</if>		
+			
+			<!--integer  -->
+			<if test="num1!=null and num1!=''">
+				and stu_isPay=#{num1}
+			</if>
+			<if test="num2!=null and num2!=''">
+				and stu_isValid=#{num2}
+			</if>
+			<if test="num3!=null and num3!=''">
+				and stu_isReturnVist=#{num3}
+			</if>
+						
+			<if test="text4 !=null and text4!=''">
+				and stu_qq like "%"#{text4}"%"
+			</if>
+			<if test="text5 !=null and text5!=''">
+				and stu_CreateTime like "%"#{text5}"%"
+			</if>
+				<if test="text6 !=null and text6!=''">
+				and stu_HomeTime like "%"#{text6}"%"
+			</if>
+			<if test="text7 !=null and text7!=''">
+				and stu_firstVisitTime like "%"#{text7}"%"
+			</if>
+				<if test="text8 !=null and text8!=''">
+				and stu_PayTime like "%"#{text8}"%"
+			</if>
+			<if test="text9 !=null and text9!=''">
+				and stu_isInClass like "%"#{text9}"%"
+			</if>
+		</where>				
+		limit #{page},#{pageSize}
+	</select>
+	<!-- poi查询所有学生 -->
+	<select id="selectpoi" resultType="student">
+		select * from students
+	</select>
+	
+	<!-- 查询手机号和邮箱是否有重复的 -->
+	<select id="selectPhone" parameterType="string" resultType="int">
+		select count(stu_id) from students where stu_Phone=#{stu_Phone}
+	</select>	
+	
+	<!-- 查询总条数 -->
+	<select id="selectCount" parameterType="fenye" resultType="int">
+		select count(1) from students 
+		<where>			
+			<if test="text1 !=null and text1!=''">
+				and stu_Name like "%"#{text1}"%"
+			</if>
+			<if test="text2 !=null and text2!=''">
+				and stu_Phone like "%"#{text2}"%"
+			</if>
+			<if test="text3 !=null and text2!=''">
+				and stu_ZiXunName like "%"#{text2}"%"
+			</if>		
+			
+			<!--integer  -->
+			<if test="num1!=null and num1!=''">
+				and stu_isPay=#{num1}
+			</if>
+			<if test="num2!=null and num2!=''">
+				and stu_isValid=#{num2}
+			</if>
+			<if test="num3!=null and num3!=''">
+				and stu_isReturnVist=#{num3}
+			</if>
+						
+			<if test="text4 !=null and text4!=''">
+				and stu_qq like "%"#{text4}"%"
+			</if>
+			<if test="text5 !=null and text5!=''">
+				and stu_CreateTime like "%"#{text5}"%"
+			</if>
+				<if test="text6 !=null and text6!=''">
+				and stu_HomeTime like "%"#{text6}"%"
+			</if>
+			<if test="text7 !=null and text7!=''">
+				and stu_firstVisitTime like "%"#{text7}"%"
+			</if>
+				<if test="text8 !=null and text8!=''">
+				and stu_PayTime like "%"#{text8}"%"
+			</if>
+			<if test="text9 !=null and text9!=''">
+				and stu_isInClass like "%"#{text9}"%"
+			</if>
+		</where>
+	</select>
+	
+	 <!-- 查询咨询师 -->
+	<select id="selectzixunname" resultType="askers">				 
+		 select askers_Id,askers_Name,weight,aexit1Int 
+		 from askers where roleName='咨询师' order by weight desc; 
+	</select> 
+	
+		<!-- 删除学生 -->
+  	<delete id="delectStudent" parameterType="int">
+  		delete from students where stu_id=#{stu_id}
+  	</delete>
+  	<!-- 添加客户 -->
+  	<insert id="insertStudent" parameterType="student">
+  	 insert into students(stu_Name,stu_Sex,stu_Age,stu_Phone,
+  	 stu_Status,stu_PerState,stu_SourceUrl,stu_SourceKeyWord,
+  	 stu_qq,stu_WeiXin,stu_isBaoBei,stu_inClassContent,stu_CreateUser) 
+  	  values(#{stu_Name},#{stu_Sex},#{stu_Age},#{stu_Phone},
+  	  #{stu_Status},#{stu_PerState},#{stu_SourceUrl},
+  	  #{stu_SourceKeyWord}, #{stu_qq},#{stu_WeiXin},
+  	   #{stu_isBaoBei},#{stu_inClassContent},#{stu_CreateUser})
+  	</insert>
+  	<!-- 修改咨询师姓名,手动分量 -->
+  	<update id="updatezixunname" parameterType="student">
+  			update students
+		<set>
+			<if test="stu_ZiXunName!=null and stu_ZiXunName!=''">
+				stu_ZiXunName=#{stu_ZiXunName},
+				</if>
+				<if test="askers_Id !=null and askers_Id !=''">	
+				askers_Id=#{askers_Id}
+				</if>
+		</set>		
+			where stu_id=#{stu_id}	
+  	</update>
+  	
+  
+  	<!-- 修改客户信息 -->
+  	<update id="updateStudent" parameterType="student">
+		update students
+		<set>
+			 <if test="stu_Name!=null and stu_Name!=''">
+				stu_Name=#{stu_Name},
+			</if>
+			<if test="stu_Sex!=null">
+				stu_Sex=#{stu_Sex},
+			</if>
+			<if test="stu_Age!=null and stu_Age!=''">
+				stu_Age=#{stu_Age},
+			</if>
+			<if test="stu_Phone !=null and stu_Phone!=''">
+				stu_Phone=#{stu_Phone},
+			</if>
+			 <if test="stu_Status !=null and stu_Status!=''">
+				stu_Status=#{stu_Status},
+			</if>
+			<if test="stu_PerState!=null and stu_PerState!=''">
+				stu_PerState=#{stu_PerState},
+			</if> 
+			<if test="stu_SourceUrl!=null and stu_SourceUrl!=''">
+				stu_SourceUrl=#{stu_SourceUrl},
+			</if>
+			<if test="stu_NetPusherld!=null and stu_NetPusherld!=''">
+				stu_NetPusherld=#{stu_NetPusherld},
+			</if>
+			<if test="stu_SourceKeyWord!=null and stu_SourceKeyWord!=''">
+				stu_SourceKeyWord=#{stu_SourceKeyWord},
+			</if>
+			<if test="stu_Address!=null and stu_Address!=''">
+				stu_Address=#{stu_Address},
+			</if>			
+			<if test="stu_stuConcern!=null and stu_stuConcern!=''">
+				stu_stuConcern=#{stu_stuConcern},
+			</if>
+			<if test="stu_FromPart!=null and stu_FromPart!=''">
+				stu_FromPart=#{stu_FromPart},
+			</if>
+			<if test="stu_qq!=null and stu_qq!=''">
+				stu_qq=#{stu_qq},
+			</if>
+			<if test="stu_WeiXin!=null and stu_WeiXin!=''">
+				stu_WeiXin=#{stu_WeiXin},
+			</if>
+			<if test="stu_isBaoBei!=null">
+				stu_isBaoBei=#{stu_isBaoBei},
+			</if>
+			
+			<if test="stu_CreateUser!=null and stu_CreateUser!=''">
+				stu_CreateUser=#{stu_CreateUser},
+			</if>
+			<if test="stu_LearnForward!=null and stu_LearnForward!=''">
+				stu_LearnForward=#{stu_LearnForward},
+			</if>
+			<if test="sexitString!=null and sexitString!=''">
+				sexitString=#{sexitString},
+			</if>
+			<if test="stu_isValid!=null">
+				stu_isValid=#{stu_isValid},
+			</if>	
+			<if test="stu_LostValid!=null and stu_LostValid!=''">
+				stu_LostValid=#{stu_LostValid},
+			</if>		
+			<if test="stu_isReturnVist!=null and stu_isReturnVist!=''">
+				stu_isReturnVist=#{stu_isReturnVist},
+			</if>
+			<if test="stu_isHome!=null">
+				stu_isHome=#{stu_isHome},
+			</if>
+			<if test="stu_HomeTime!=null and stu_HomeTime!=''">
+				stu_HomeTime=#{stu_HomeTime},
+			</if>			
+			<!-- <if test="stu_firstVisitTime!=null and stu_firstVisitTime!=''">
+				stu_firstVisitTime=#{stu_firstVisitTime},
+			</if> -->
+			<if test="stu_preMoney !=null and stu_preMoney!=''">
+				stu_preMoney=#{stu_preMoney},
+			</if>
+			<if test="stu_preMoneyTime!=null and stu_preMoneyTime!=''">
+				stu_preMoneyTime=#{stu_preMoneyTime},
+			</if>
+			<if test="stu_ReturnMoneyReason!=null and stu_ReturnMoneyReason!=''">
+				stu_ReturnMoneyReason=#{stu_ReturnMoneyReason},
+			</if>			
+			<if test="stu_isPay!=null">
+				stu_isPay=#{stu_isPay},
+			</if>			
+			<if test="stu_PayTime!=null and stu_PayTime!=''">
+				stu_PayTime=#{stu_PayTime},
+			</if>
+			<if test="stu_Money !=null and stu_Money!=''">
+				stu_Money=#{stu_Money},
+			</if>
+			<if test="stu_isReturnMoney!=null">
+				stu_isReturnMoney=#{stu_isReturnMoney},
+			</if>
+			<if test="stu_isInClass!=null">
+				stu_isInClass=#{stu_isInClass},
+			</if>
+			<if test="stu_inClassTime!=null and stu_inClassTime!=''">
+				stu_inClassTime=#{stu_inClassTime},
+			</if> 
+			<if test="stu_inClassContent!=null and stu_inClassContent!=''">
+				stu_inClassContent=#{stu_inClassContent},
+			</if>			
+			<if test="stu_AskerContent!=null and stu_AskerContent!=''">
+				stu_AskerContent=#{stu_AskerContent}
+			</if>			 			
+		</set>		
+			where stu_id=#{stu_id}				
+	</update>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyz.dao.RoleMapper">
+ 
+<!-- 查询总条数 -->
+	<select id="getCont" parameterType="fenye" resultType="int">
+		select count(1) from roles
+	</select>
+	<!-- 查询角色总数据 -->
+	<select id="selectRoles" parameterType="fenye" resultType="role">
+		select * from roles
+	</select>
+	<!-- 修改角色信息 -->
+	<update id="updateRole" parameterType="role">
+	 	update roles 
+		<set>
+			<if  test="roles_Name != null and roles_Name != '' ">
+			 roles_Name=#{roles_Name} 
+			</if>
+		</set>
+		<where>
+			roles_Id=#{roles_Id}		
+		</where> 
+	</update>
+	<!-- 删除角色 -->
+	<delete id="delRole"  parameterType="int">
+		delete from roles where roles_Id=#{roles_Id}	
+	</delete>
+	<!-- 添加角色 -->
+	<insert id="insertRole" parameterType="role">
+	 INSERT INTO roles(roles_Name) select #{roles_Name}
+ 	 WHERE NOT EXISTS (SELECT * FROM roles WHERE roles_Name = #{roles_Name});
+	</insert>
+	<!-- 查询角色模块 -->
+ 	<select id="selectRoleModu" parameterType="int" resultType="module">
+ 		select m.*
+ 		from modules m  INNER JOIN  rolemodules rm  on m.modules_Id=rm.modules_Id
+ 		where   rm.roles_Id=#{roles_Id}
+ 		ORDER BY m.modules_weight asc
+ 	</select>
+ 	<!--  deleteRoleModuleByRoleId-->
+ 	<delete id="deleteRoleModuleByRoleId"  parameterType="int">
+		delete from rolemodules where roles_Id=#{roles_Id}	
+ 	</delete>
+ 	<!-- 添加角色模块信息 -->
+ 	<insert id="insertRoleModule" parameterType="roleModules">
+		insert  into 
+			rolemodules (roles_Id,modules_Id )
+			values (#{roles_Id},#{module_Id})
+	</insert>
+	<select id="selectbyRolesRid" parameterType="int" resultType="String">
+	select roles_Name  from roles  where roles_Id=#{roles_Id}
+	</select>
+</mapper>

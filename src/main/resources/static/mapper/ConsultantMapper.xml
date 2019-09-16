@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyz.dao.ConsultantMapper">
+	<!-- 分页多条件查询 -->
+	<select id="selectStuAll" parameterType="fenye" resultType="student">
+		select * FROM students 
+		<where>		
+			stu_ZiXunName=#{UserName}	
+			<if test="text1 !=null and text1!=''">
+				and stu_Name like "%"#{text1}"%"
+			</if>
+			<if test="text2 !=null and text2!=''">
+				and stu_Phone like "%"#{text2}"%"
+			</if>
+			<if test="text3 !=null and text2!=''">
+				and stu_ZiXunName like "%"#{text2}"%"
+			</if>		
+			
+			<!--integer  -->
+			<if test="num1!=null and num1!=''">
+				and stu_isPay=#{num1}
+			</if>
+			<if test="num2!=null and num2!=''">
+				and stu_isValid=#{num2}
+			</if>
+			<if test="num3!=null and num3!=''">
+				and stu_isReturnVist=#{num3}
+			</if>
+						
+			<if test="text4 !=null and text4!=''">
+				and stu_qq like "%"#{text4}"%"
+			</if>
+			<if test="text5 !=null and text5!=''">
+				and stu_CreateTime like "%"#{text5}"%"
+			</if>
+				<if test="text6 !=null and text6!=''">
+				and stu_HomeTime like "%"#{text6}"%"
+			</if>
+			<if test="text7 !=null and text7!=''">
+				and stu_firstVisitTime like "%"#{text7}"%"
+			</if>
+				<if test="text8 !=null and text8!=''">
+				and stu_PayTime like "%"#{text8}"%"
+			</if>
+			<if test="text9 !=null and text9!=''">
+				and stu_isInClass like "%"#{text9}"%"
+			</if>
+		</where>				
+		limit #{page},#{pageSize}
+	</select>
+	<!-- 查询总条数 -->
+	<select id="selectCountStu" parameterType="fenye" resultType="int">
+		select count(1) from students 
+		<where>		
+			stu_ZiXunName=#{UserName}		
+			<if test="text1 !=null and text1!=''">
+				and stu_Name like "%"#{text1}"%"
+			</if>
+			<if test="text2 !=null and text2!=''">
+				and stu_Phone like "%"#{text2}"%"
+			</if>
+			<if test="text3 !=null and text2!=''">
+				and stu_ZiXunName like "%"#{text2}"%"
+			</if>		
+			
+			<!--integer  -->
+			<if test="num1!=null and num1!=''">
+				and stu_isPay=#{num1}
+			</if>
+			<if test="num2!=null and num2!=''">
+				and stu_isValid=#{num2}
+			</if>
+			<if test="num3!=null and num3!=''">
+				and stu_isReturnVist=#{num3}
+			</if>
+						
+			<if test="text4 !=null and text4!=''">
+				and stu_qq like "%"#{text4}"%"
+			</if>
+			<if test="text5 !=null and text5!=''">
+				and stu_CreateTime like "%"#{text5}"%"
+			</if>
+				<if test="text6 !=null and text6!=''">
+				and stu_HomeTime like "%"#{text6}"%"
+			</if>
+			<if test="text7 !=null and text7!=''">
+				and stu_firstVisitTime like "%"#{text7}"%"
+			</if>
+				<if test="text8 !=null and text8!=''">
+				and stu_PayTime like "%"#{text8}"%"
+			</if>
+			<if test="text9 !=null and text9!=''">
+				and stu_isInClass like "%"#{text9}"%"
+			</if>
+		</where>
+	</select>
+
+	<!-- 修改客户信息 -->
+  	<update id="updateStu" parameterType="student">
+		update students
+		<set>
+			 <if test="stu_Name!=null and stu_Name!=''">
+				stu_Name=#{stu_Name},
+			</if>
+			<if test="stu_Sex!=null">
+				stu_Sex=#{stu_Sex},
+			</if>
+			<if test="stu_Age!=null and stu_Age!=''">
+				stu_Age=#{stu_Age},
+			</if>
+			<if test="stu_Phone !=null and stu_Phone!=''">
+				stu_Phone=#{stu_Phone},
+			</if>
+			 <if test="stu_Status !=null and stu_Status!=''">
+				stu_Status=#{stu_Status},
+			</if>
+			<if test="stu_PerState!=null and stu_PerState!=''">
+				stu_PerState=#{stu_PerState},
+			</if> 
+			<if test="stu_SourceUrl!=null and stu_SourceUrl!=''">
+				stu_SourceUrl=#{stu_SourceUrl},
+			</if>
+			<if test="stu_NetPusherld!=null and stu_NetPusherld!=''">
+				stu_NetPusherld=#{stu_NetPusherld},
+			</if>
+			<if test="stu_SourceKeyWord!=null and stu_SourceKeyWord!=''">
+				stu_SourceKeyWord=#{stu_SourceKeyWord},
+			</if>
+			<if test="stu_Address!=null and stu_Address!=''">
+				stu_Address=#{stu_Address},
+			</if>			
+			<if test="stu_stuConcern!=null and stu_stuConcern!=''">
+				stu_stuConcern=#{stu_stuConcern},
+			</if>
+			<if test="stu_FromPart!=null and stu_FromPart!=''">
+				stu_FromPart=#{stu_FromPart},
+			</if>
+			<if test="stu_qq!=null and stu_qq!=''">
+				stu_qq=#{stu_qq},
+			</if>
+			<if test="stu_WeiXin!=null and stu_WeiXin!=''">
+				stu_WeiXin=#{stu_WeiXin},
+			</if>
+			<if test="stu_isBaoBei!=null">
+				stu_isBaoBei=#{stu_isBaoBei},
+			</if>	
+			<if test="stu_LearnForward!=null and stu_LearnForward!=''">
+				stu_LearnForward=#{stu_LearnForward},
+			</if>
+			<if test="sexitString !=null and sexitString !=''">
+				sexitString=#{sexitString},
+			</if>
+			<if test="stu_isValid!=null">
+				stu_isValid=#{stu_isValid},
+			</if>	
+			<if test="stu_LostValid!=null and stu_LostValid!=''">
+				stu_LostValid=#{stu_LostValid},
+			</if>		
+			<if test="stu_isReturnVist!=null">
+				stu_isReturnVist=#{stu_isReturnVist},
+			</if>
+			<if test="stu_isHome!=null">
+				stu_isHome=#{stu_isHome},
+			</if>
+			<if test="stu_HomeTime!=null and stu_HomeTime!=''">
+				stu_HomeTime=#{stu_HomeTime},
+			</if>			
+			<if test="stu_firstVisitTime!=null and stu_firstVisitTime!=''">
+				stu_firstVisitTime=#{stu_firstVisitTime},
+			</if>
+			<if test="stu_preMoney !=null and stu_preMoney!=''">
+				stu_preMoney=#{stu_preMoney},
+			</if>
+			<if test="stu_preMoneyTime!=null and stu_preMoneyTime!=''">
+				stu_preMoneyTime=#{stu_preMoneyTime}
+			</if>
+			<if test="stu_ReturnMoneyReason!=null and stu_ReturnMoneyReason!=''">
+				stu_ReturnMoneyReason=#{stu_ReturnMoneyReason},
+			</if>			
+			<if test="stu_isPay!=null">
+				stu_isPay=#{stu_isPay},
+			</if>			
+			<if test="stu_PayTime!=null and stu_PayTime!=''">
+				stu_PayTime=#{stu_PayTime},
+			</if>
+			<if test="stu_Money !=null and stu_Money!=''">
+				stu_Money=#{stu_Money},
+			</if>
+			<if test="stu_isReturnMoney!=null">
+				stu_isReturnMoney=#{stu_isReturnMoney},
+			</if>
+			<if test="stu_isInClass!=null ">
+				stu_isInClass=#{stu_isInClass},
+			</if>
+			<if test="stu_inClassTime!=null and stu_inClassTime!=''">
+				stu_inClassTime=#{stu_inClassTime},
+			</if> 
+			<if test="stu_inClassContent!=null and stu_inClassContent!=''">
+				stu_inClassContent=#{stu_inClassContent},
+			</if>			
+			<if test="stu_AskerContent!=null and stu_AskerContent!=''">
+				stu_AskerContent=#{stu_AskerContent}
+			</if>			 			
+		</set>		
+			where stu_id=#{stu_id}		
+	</update>
+
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyz.dao.UserMapper">
+	<!-- 查询用户列表 -->
+	<select id="getCount" parameterType="fenye" resultType="int">
+		select count(1) from user
+		<where>
+	   		<if test="text2 != null and text2 != '' ">
+				and loginName LIKE  "%"#{text2}"%"
+			</if>
+			<if test="text3 != null and text3 != '' ">
+				and createTime &gt;= #{text3}
+			</if>
+			<if test="text4 != null and text4 != '' ">
+				and createTime &lt;=#{text4}
+			</if>
+			<if test="text5 != null and text5 != '' ">
+				and isLockout = #{text5}
+			</if>
+	   	</where>  
+	</select>
+	<!-- 查询所有数据 -->
+	<select id="selectUsers" parameterType="fenye" resultType="user">
+		select * from user
+		<where>
+			<if test="text2 != null and text2 != '' ">
+				and loginName LIKE  "%"#{text2}"%"
+			</if>
+			<if test="text3 != null and text3 != '' ">
+				and createTime &gt;= #{text3}
+			</if>
+			<if test="text4 != null and text4 != '' ">
+				and createTime &lt;=#{text4}
+			</if>
+			<if test="text5 != null and text5 != '' ">
+				and isLockout = #{text5}
+			</if>
+		</where>
+		<if test="text1 != null and text1 != '' ">
+			order by ${text1} 
+		</if>
+		limit #{page},#{pageSize}
+	</select>
+	<!-- 验证用户名是否重复 -->
+	<!-- <select id="selectUser" parameterType="string" resultType="user">
+		select * from user where loginName=#{loginName}
+	</select> -->
+	<!-- 重置密码 -->
+	<update id="updatePsd" parameterType="user">
+		update user 
+		<set>
+			 passWord=#{passWord} 
+		</set>
+		<where>
+			loginName=#{loginName}		
+		</where> 
+	</update>
+	<!-- 添加用户 -->
+	<!-- <insert id="inertUse" parameterType="user">
+		INSERT INTO 
+			user (loginName,passWord,protectEMail,protectMTel,createTime,isLockout,uexit2String) 
+			VALUES (#{loginName},#{passWord},#{protectEMail},#{protectMTel},curdate(),0,'1.jpg')
+	</insert> -->
+	<!-- 新建用户  -->
+	<insert id="insertNewUser" parameterType="user">
+		INSERT INTO  `user`
+			 (loginName,passWord,protectEMail,protectMTel,createTime,isLockout,psdWrongTime,uexit2String) 
+			VALUES (#{loginName},#{passWord},#{protectEMail},#{protectMTel},NOW(),0,0,'1.jpg')
+	</insert>
+	<!--修改用户  -->
+	<update id="updateUse" parameterType="user">
+		update user 
+		<set>
+			<if test="loginName !=null and loginName!='' ">
+				loginName=#{loginName},
+			</if>
+			<if test="protectMTel !=null and protectMTel!=''">
+				protectMTel=#{protectMTel},
+			</if>
+			<if test="protectEMail !=null and protectEMail!='' ">
+				protectEMail=#{protectEMail},
+			</if>
+			<if test="psdWrongTime !=null and psdWrongTime!='' ">
+				psdWrongTime=#{psdWrongTime},
+			</if>
+			<if test="loginTime !=null and loginTime!='' ">
+				loginTime=#{loginTime}
+			</if>
+			<if test="uexit2String !=null and uexit2String!='' ">
+				uexit2String=#{uexit2String}
+			</if>
+		</set>
+		<where>
+			user_Id=#{user_Id}		
+		</where> 
+	</update>
+	<!--  根据id删除用户信息-->
+	<delete id="delUse" parameterType="int">
+		delete from user where user_Id=#{user_Id}
+	</delete>
+	<!-- 锁定用户lockUse -->
+	<update id="lockUse" parameterType="int">
+		update user 
+		<set>
+			 isLockout=1,lockTime=NOW(),
+		</set>
+		<where>
+			user_Id=#{user_Id}	
+		</where> 
+	</update>
+	<!-- 解锁用户unLockUse -->
+	<update id="unLockUse" parameterType="int">
+		update `user`
+		<set>
+			 isLockout=0 ,lockTime=null,psdWrongTime=0
+		</set>
+		<where>
+			user_Id=#{user_Id}	
+		</where> 
+	</update>
+	<!-- 根据用户id查询用户的角色 -->
+	<select id="selectUserRole" parameterType="int" resultType="role">
+		SELECT r.*
+		FROM roles r,`user` u, userrole ur 
+		WHERE  ur.roleId = r.roles_Id AND ur.userId = u.user_Id AND user_Id =#{user_Id}
+	</select>
+	<!-- 查询所有角色 -->
+	<select id="selectRole" resultType="role">
+		select * from roles	 
+	</select>
+	<!--添加 用户角色 -->
+	<insert id="inertUserRol" parameterType="userRole">
+		INSERT INTO 
+			userrole (roleId,userId) 
+			VALUES (#{roleId},#{userId})
+	</insert>
+	<delete id="delUserRol" parameterType="userRole">
+		DELETE from userrole where  userId =#{userId} and roleId=#{roleId}
+	</delete>
+	<!-- 登录 -->
+	<select id="findByloginName" resultType="user" parameterType="String">
+        select * from `user` where loginName = #{loginName}
+    </select>
+	<!--  根据用户名查询用户返回id-->
+	<select id="selectByName" parameterType="String" resultType="int" >
+		select user_Id from `user` where loginName = #{loginName}
+	</select>	
+	<!--  根据用户名查询用户返回用户对象-->
+	<select id="selectUserByName" parameterType="String" resultType="User" >
+		select * from `user` where loginName = #{loginName}
+	</select>	
+	<!--selectUserByTel  -->
+	<select id="selectUserByTel" parameterType="String" resultType="user" >
+		select u.user_Id,u.loginName,u.protectMTel,u.`passWord` 
+		from `user` u where protectMTel = #{protectMTel}
+	</select>	
+	<!-- selectByNameLockout -->
+	<select id="selectByNameLockout" parameterType="String" resultType="int" >
+		select user_Id from `user` where loginName = #{loginName} and isLockout=1
+	</select>	
+	<!--  selectUse-->
+	<select id="selectUse" parameterType="user" resultType="user" >
+		select * from `user` where loginName = #{loginName} and passWord = #{passWord}
+	</select>	
+	
+	<!--selectRoleModuleByUser  -->
+	<select id="selectRoleModuleByUser" parameterType="int" resultType="module" >
+		select DISTINCT m.modules_Id,m.modules_Name,m.parentId,m.modules_path,m.modules_weight,m.mexit1int 
+		from `user` u
+		INNER JOIN userrole ur on u.user_Id =ur.userId
+		INNER JOIN roles r ON r.roles_Id=ur.roleId
+		INNER JOIN rolemodules rm on r.roles_Id=rm.roles_Id
+		INNER JOIN  modules m  on rm.modules_Id=m.modules_Id
+		where u.user_Id=#{user_Id}
+	</select>
+	<!-- 修改密码updateUserPwd -->
+	<update id="updateUserPwd" parameterType="user">
+		update `user`
+		<set>
+			<if test="passWord !=null and passWord!='' ">
+				`passWord`=#{passWord}
+			</if> 
+		</set>
+		<where>
+			loginName=#{loginName}	
+		</where> 
+	</update>
+	
+	 
+	 <!-- 签到 -->
+	 <select id="selectLoginR_id" parameterType="int" resultType="int">
+		select max(roleId) from userrole where userId=#{userId}
+		</select>
+</mapper>
